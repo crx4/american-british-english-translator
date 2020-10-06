@@ -17,15 +17,24 @@ suite('Functional Tests', () => {
     Translator = require('../public/translator.js');
   });
 
-  suite('Function ____()', () => {
+  suite('Function display()', () => {
     /* 
       The translated sentence is appended to the `translated-sentence` `div`
       and the translated words or terms are wrapped in 
       `<span class="highlight">...</span>` tags when the "Translate" button is pressed.
     */
     test("Translation appended to the `translated-sentence` `div`", done => {
+      
+      const textArea = document.getElementById('text-input');
+      const translationDiv = document.getElementById('translated-sentence');
+      const output = '<span class="highlight">Colour</span> code is red.';
 
-      // done();
+      textArea.value = 'Color code is red.';
+      Translator.translate(textArea.value);
+
+      assert.strictEqual(translationDiv.innerHTML, output);
+      
+      done();
     });
 
     /* 
@@ -34,8 +43,17 @@ suite('Functional Tests', () => {
       `translated-sentence` `div` when the "Translate" button is pressed.
     */
     test("'Everything looks good to me!' message appended to the `translated-sentence` `div`", done => {
+      
+      const textArea = document.getElementById('text-input');
+      textArea.value = 'I miss my love.';
+      const translationDiv = document.getElementById('translated-sentence');
+      const output = 'Everything looks good to me!';
 
-      // done();
+      Translator.translate(textArea.value);
+
+      assert.strictEqual(translationDiv.textContent, output);
+      
+      done();
     });
 
     /* 
@@ -45,19 +63,42 @@ suite('Functional Tests', () => {
     */
     test("'Error: No text to translate.' message appended to the `translated-sentence` `div`", done => {
 
-      // done();
+      const textArea = document.getElementById('text-input');
+      textArea.value = '';
+      const errorDiv = document.getElementById('error-msg');
+      const output = 'Error: No text to translate.';
+
+      Translator.translate(textArea.value);
+
+      assert.strictEqual(errorDiv.textContent, output);
+      
+      done();
     });
 
   });
 
-  suite('Function ____()', () => {
+  suite('Function clear()', () => {
     /* 
       The text area and both the `translated-sentence` and `error-msg`
       `divs` are cleared when the "Clear" button is pressed.
     */
     test("Text area, `translated-sentence`, and `error-msg` are cleared", done => {
+      const textArea = document.getElementById('text-input');
+      const translationDiv = document.getElementById('translated-sentence');
+      const errorDiv = document.getElementById('error-msg');
 
-      // done();
+      textArea.value = "cozy";
+      translationDiv.textContent = "cosy";
+
+      errorDiv.textContent = 'Error: No text to translate.';
+
+      Translator.clear();
+
+      assert.strictEqual(textArea.value, '');
+      assert.strictEqual(translationDiv.textContent, '');
+      assert.strictEqual(errorDiv.textContent, '');
+      
+      done();
     });
 
   });
